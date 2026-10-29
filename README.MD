@@ -2,5 +2,6 @@
 
 ## Todo
 - [x] Self collision
-- [ ] Score label
+- [x] Score label
 - [ ] Don't pick food pos in the snake
+- [ ] Add blank space above the gameboard for useful information

@@ -2,7 +2,7 @@ use std::collections::VecDeque;
 
 use anyhow::Result;
 use macroquad::{
-    color::{BLACK, GREEN, RED},
+    color::{BLACK, GREEN, RED, WHITE},
     input::{KeyCode, get_last_key_pressed},
     text::draw_text,
     time::get_frame_time,
@@ -44,6 +44,8 @@ async fn main() -> Result<()> {
 
     let mut alive = true;
 
+    let mut score: usize = 0;
+
     loop {
         time_since_last_move += get_frame_time();
 
@@ -51,6 +53,8 @@ async fn main() -> Result<()> {
             let has_eaten_food =
                 if snake.body.front().expect("Snake body should not be None") == &food.pos {
                     food = Food::spawn();
+
+                    score += 1;
 
                     true
                 } else {
@@ -103,6 +107,9 @@ async fn main() -> Result<()> {
                 RED,
             );
         }
+
+        let score_text = format!("Score: {}", score);
+        draw_text(score_text, 50.0, 50.0, 100.0, WHITE);
 
         next_frame().await
     }
