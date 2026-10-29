@@ -2,8 +2,9 @@ use std::collections::VecDeque;
 
 use anyhow::Result;
 use macroquad::{
-    color::{BLACK, GREEN},
+    color::{BLACK, GREEN, RED},
     input::{KeyCode, get_last_key_pressed},
+    text::draw_text,
     time::get_frame_time,
     window::{Conf, clear_background, next_frame},
 };
@@ -41,6 +42,8 @@ async fn main() -> Result<()> {
     let mut time_since_last_move = 0.0;
     let mut food = Food::spawn();
 
+    let mut alive = true;
+
     loop {
         time_since_last_move += get_frame_time();
 
@@ -53,7 +56,9 @@ async fn main() -> Result<()> {
                 } else {
                     false
                 };
-            snake.move_next(has_eaten_food);
+            if !snake.move_next(has_eaten_food) {
+                alive = false;
+            }
             time_since_last_move = 0.0;
         }
 
@@ -88,6 +93,16 @@ async fn main() -> Result<()> {
         draw_square(food.pos.x, food.pos.y, GREEN);
 
         snake.draw();
+
+        if !alive {
+            draw_text(
+                "YOU DIED".to_string(),
+                WINDOW_WIDTH as f32 / 2.0,
+                WINDOW_HEIGHT as f32 / 2.0,
+                100.0,
+                RED,
+            );
+        }
 
         next_frame().await
     }

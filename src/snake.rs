@@ -46,7 +46,7 @@ impl Snake {
         }
     }
 
-    pub fn move_next(&mut self, has_eaten_food: bool) {
+    pub fn move_next(&mut self, has_eaten_food: bool) -> bool {
         let first = self.body.front().expect("Body can't be empty");
 
         let new_head = match self.dir {
@@ -56,10 +56,17 @@ impl Snake {
             Orientation::Right => Pos::new(wrap(first.x + 1, S_COUNT), first.y),
         };
 
+        for b in self.body.iter() {
+            if b == &new_head {
+                return false;
+            }
+        }
+
         self.body.push_front(new_head);
 
         if !has_eaten_food {
             self.body.pop_back();
         }
+        return true;
     }
 }
