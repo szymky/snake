@@ -1,5 +1,3 @@
-use std::collections::VecDeque;
-
 use anyhow::Result;
 use macroquad::{
     color::{BLACK, GREEN, RED, WHITE},
