@@ -29,7 +29,7 @@ fn config() -> Conf {
     Conf {
         window_title: "snake".to_string(),
         window_width: WINDOW_WIDTH,
-        window_height: WINDOW_HEIGHT,
+        window_height: WINDOW_HEIGHT + 100,
         window_resizable: false,
         high_dpi: true,
         ..Default::default()
@@ -109,7 +109,7 @@ async fn main() -> Result<()> {
         }
 
         let score_text = format!("Score: {}", score);
-        draw_text(score_text, 50.0, 50.0, 100.0, WHITE);
+        draw_text(score_text, 50.0, WINDOW_HEIGHT as f32 + 80.0, 100.0, WHITE);
 
         next_frame().await
     }
