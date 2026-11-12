@@ -38,7 +38,7 @@ fn config() -> Conf {
 async fn main() -> Result<()> {
     let mut snake = Snake::new(Pos::new(3, 3), Orientation::Right);
     let mut time_since_last_move = 0.0;
-    let mut food = Food::spawn();
+    let mut food = Food::spawn(&snake.body);
 
     let mut alive = true;
 
@@ -50,7 +50,7 @@ async fn main() -> Result<()> {
         if time_since_last_move >= MOVEMENT_INTERVAL {
             let has_eaten_food =
                 if snake.body.front().expect("Snake body should not be None") == &food.pos {
-                    food = Food::spawn();
+                    food = Food::spawn(&snake.body);
 
                     score += 1;
 

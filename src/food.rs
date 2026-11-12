@@ -1,3 +1,6 @@
+use std::collections::HashSet;
+use macroquad::rand::ChooseRandom;
+
 use crate::{constants::S_COUNT, pos::Pos};
 
 #[derive(Debug, PartialEq, Eq)]
@@ -6,12 +9,17 @@ pub struct Food {
 }
 
 impl Food {
-    pub fn spawn() -> Self {
+    pub fn spawn<'a>(blacklist: impl IntoIterator<Item = &'a Pos>) -> Self {
+        
+        let blocked: HashSet<Pos> = blacklist.into_iter().copied().collect();
+
+        let greenlist: Vec<Pos> = (0..S_COUNT)
+            .flat_map(|y| (0..S_COUNT).map(move |x| Pos { x, y }))
+            .filter(|p| !blocked.contains(p))
+            .collect();
+
         Self {
-            pos: Pos::new(
-                rand::random_range(0..S_COUNT),
-                rand::random_range(0..S_COUNT),
-            ),
+             pos: greenlist.choose().copied().unwrap_or(Pos::new(0, 0)),
         }
     }
 }
